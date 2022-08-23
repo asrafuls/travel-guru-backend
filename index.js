@@ -26,6 +26,7 @@ client.connect(() => {
     const bannerCollection = client.db("travel-guru").collection("banner-items");
     const destinationCollection = client.db("travel-guru").collection("destination-items");
     const tourCollection = client.db("travel-guru").collection("tour-items");
+    const adminsCollection = client.db("travel-guru").collection("admins");
 
     const destinationData = [
         {
@@ -110,34 +111,37 @@ client.connect(() => {
             ],
             day: 3,
             night: 2,
-            person: 1,
             gidePrice: false,
             destinations: [
-                "St. Martin's Island"
+                "Cox's bazar",
+                "Inani Beach"
             ],
             destinationId: "cx1",
             bg: 'https://fervent-ardinghelli-1b9493.netlify.app/1.png',
-            person: [
+            travelers: [
                 {
                     name: "Adult",
                     id: "ad",
                     av: true,
                     start: 1,
-                    end: 4
+                    end: 4,
+                    person: 1
                 },
                 {
                     name: "Children",
                     id: "ch",
                     av: false,
                     start: 1,
-                    end: 4
+                    end: 4,
+                    person: 1
                 },
                 {
                     name: "Infant",
                     id: "in",
                     av: false,
                     start: 1,
-                    end: 1
+                    end: 1,
+                    person: 1
                 }
             ],
             max: 12
@@ -147,7 +151,7 @@ client.connect(() => {
             description: "Sajek Tripuri Valley is one of the most popular tourist spots in Bangladesh situated among the hills of the Kasalong range of mountains in Sajek union, Baghaichhari Upazila in Rangamati District. The valley is 2,000 feet above sea level. Sajek Tripuri Valley is known as the Queen of Hills & Roof of Rangamati.",
             price: 15000,
             cId: "sjreg1",
-            img: [
+            imgs: [
                 "https://cdn.pixabay.com/photo/2019/12/12/15/11/bangladesh-4690973_960_720.jpg",
                 "https://images.unsplash.com/photo-1589307357838-9ce2259ac411?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
                 "https://cdn.pixabay.com/photo/2021/04/26/22/39/bangladesh-6210120_960_720.jpg",
@@ -157,34 +161,36 @@ client.connect(() => {
             ],
             day: 2,
             night: 1,
-            person: 1,
             gidePrice: false,
             destinations: [
                 "St. Martin's Island"
             ],
             destinationId: "sj1",
             bg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Sajek_Valley_2.jpg/1200px-Sajek_Valley_2.jpg',
-            person: [
+            travelers: [
                 {
                     name: "Adult",
                     id: "ad",
                     av: true,
                     start: 1,
-                    end: 4
+                    end: 4,
+                    person: 1
                 },
                 {
                     name: "Children",
                     id: "ch",
                     av: false,
                     start: 1,
-                    end: 4
+                    end: 4,
+                    person: 1
                 },
                 {
                     name: "Infant",
                     id: "in",
                     av: false,
                     start: 1,
-                    end: 1
+                    end: 1,
+                    person: 1
                 }
             ],
             max: 12
@@ -194,7 +200,7 @@ client.connect(() => {
             description: "Saint Martin is part of the Leeward Islands in the Caribbean Sea. It comprises 2 separate countries, divided between its northern French side, called Saint-Martin, and its southern Dutch side, Sint Maarten. The island is home to busy resort beaches and secluded coves. It's also known for fusion cuisine, vibrant nightlife and duty-free shops selling jewelry and liquor.",
             price: 20000,
             cId: "stpre1",
-            img: [
+            imgs: [
                 "https://images.unsplash.com/photo-1606546008984-41818b01968a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1073&q=80",
                 "https://awalkintheworld.com/wp-content/uploads/2020/08/beach-saint-martins-island-bangladesh-1920x1080.jpg",
                 "https://avijatrik.org/wp-content/uploads/2019/06/cover-3-870x555.jpg",
@@ -202,34 +208,36 @@ client.connect(() => {
             ],
             day: 2,
             night: 1,
-            person: 1,
             gidePrice: 200,
             destinations: [
                 "St. Martin's Island"
             ],
             destinationId: "st1",
             bg: 'https://chokkhttps://www.theindependentbd.com/assets/news_images/St-Martin-as-its-territory.jpgor.com/wp-content/uploads/2018/10/Sreemangal.jpg',
-            person: [
+            travelers: [
                 {
                     name: "Adult",
                     id: "ad",
                     av: true,
                     start: 1,
-                    end: 4
+                    end: 4,
+                    person: 1
                 },
                 {
                     name: "Children",
                     id: "ch",
                     av: false,
                     start: 1,
-                    end: 4
+                    end: 4,
+                    person: 1
                 },
                 {
                     name: "Infant",
                     id: "in",
                     av: false,
                     start: 1,
-                    end: 1
+                    end: 1,
+                    person: 1
                 }
             ],
             max: 12
@@ -301,13 +309,21 @@ client.connect(() => {
 
     // Post Initial Data
     app.get('/post', (req, res) => {
-        // tourCollection.insertMany()
-        //     .then(response => {
-        //         res.send("Success")
-        //     })
-        //     .catch(err => {
-        //         res.status(400).send("Bad request.")
-        //     })
+        tourCollection.insertMany(tourItems)
+            .then(response => {
+                res.send("Success")
+            })
+            .catch(err => {
+                res.status(400).send("Bad request.")
+            })
+    })
+
+    // Get all admin items
+    app.get('/admins', (req, res) => {
+        adminsCollection.find({})
+        .toArray((error, data) => {
+            res.send(data)
+        }) 
     })
 
     // Get All Tour Items
