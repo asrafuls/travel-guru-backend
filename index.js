@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const e = require('express');
+const { response } = require('express');
 const app = express()
 const port = 3001
 
@@ -374,7 +375,20 @@ client.connect(() => {
             .toArray((error, data) => {
                 res.status(200).send(data)
             })
+            
     })
+
+    // Post tour item
+    app.get('/post-tour', (req, res) => {
+        tourCollection.insertOne(req.body)
+        .then(response => {
+            res.status(200).send("Tour Item Is Successfully Published.")
+        })
+        .catch(error => {
+            res.status(400).send(error.message)
+        })
+    })
+
 })
 
 app.listen(process.env.PORT || port)
