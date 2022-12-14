@@ -7,7 +7,8 @@ const { response } = require('express');
 const app = express()
 const port = 3001
 
-// Heroku Mail: asrafuls027
+
+// Vercel Mail: asrafuls027
 
 require('dotenv').config();
 
